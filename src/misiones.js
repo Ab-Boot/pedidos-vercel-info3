@@ -27,7 +27,20 @@ import { ESTADOS } from './datos.js'
 //        Math.round(x * 100) / 100
 export function totalPedido(pedido) {
 
+    const items = pedido.items || [];
+    const descuento = pedido.descuento || 0;
+
+    let subtotal = 0;
+
+    for (const item of items) {
+        subtotal += item.cantidad * item.precioUnitario;
+    }
+
+    const total = subtotal * (1 - descuento);
+
+    return Math.round((total + Number.EPSILON) * 100) / 100;
 }
+
 
 // ----------------------------------------------------------------------------
 // MISIÓN 2 · RF4 — ¿Este cambio de estado es válido?
