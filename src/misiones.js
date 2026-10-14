@@ -71,7 +71,28 @@ export function puedeTransicionar(actual, nuevo) {
 //                         correo: algo@algo.algo   (el email es opcional)
 // Pista: '55 1234-5678'.replace(/[\s-]/g, '')   y   /^\d{10}$/.test(...)
 export function validarCliente(cliente) {
-  return [] // TODO
+  const errores = [];
+
+  // 1. Validar nombre: si está vacío o solo tiene espacios
+  if (!cliente.nombre || cliente.nombre.trim() === '') {
+    errores.push('nombre_requerido');
+  }
+
+  // 2. Validar teléfono: quitar espacios/guiones y verificar que sean 10 dígitos
+  const telefonoLimpio = cliente.telefono ? String(cliente.telefono).replace(/[\s-]/g, '') : '';
+  if (!/^\d{10}$/.test(telefonoLimpio)) {
+    errores.push('telefono_invalido');
+  }
+
+  // 3. Validar email: es opcional, pero si viene, debe tener forma de correo (algo@algo.algo)
+  if (cliente.email && cliente.email.trim() !== '') {
+    const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formatoEmail.test(cliente.email)) {
+      errores.push('email_invalido');
+    }
+  }
+
+  return errores;
 }
 
 // ----------------------------------------------------------------------------
@@ -80,9 +101,6 @@ export function validarCliente(cliente) {
 // Devuelve un objeto con TODOS los estados como llave, aunque tengan 0:
 //   { registrado: 3, en_preparacion: 3, listo: 2, entregado: 2 }
 // Con una lista vacía, todos van en 0.
-export function resumenPorEstado(pedidos) {
-  return {} // TODO
-}
 
 // ----------------------------------------------------------------------------
 // MISIÓN 5 · RF5 — Buscar pedidos por nombre de cliente
@@ -92,9 +110,6 @@ export function resumenPorEstado(pedidos) {
 // "José Martínez". Un texto vacío (o solo espacios) devuelve todos.
 // Pista: 'Ramírez'.normalize('NFD').replace(/[̀-ͯ]/g, '')
 //        Investiga qué hace NFD. Es un problema real en sistemas en español.
-export function buscarPedidos(pedidos, texto) {
-  return [] // TODO
-}
 
 // ----------------------------------------------------------------------------
 // MISIÓN 6 · DESTACADO — Los mejores clientes
@@ -104,6 +119,5 @@ export function buscarPedidos(pedidos, texto) {
 // Formato: [{ cliente: 'Ana Ramírez', total: 1316 }, ...]
 // Orden: total de mayor a menor; si empatan, por nombre alfabético.
 // Pista: un objeto acumulador, luego Object.entries, map y sort.
-export function topClientes(pedidos, n) {
-  return [] // TODO
-}
+
+
