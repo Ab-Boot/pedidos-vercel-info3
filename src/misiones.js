@@ -101,6 +101,20 @@ export function validarCliente(cliente) {
 // Devuelve un objeto con TODOS los estados como llave, aunque tengan 0:
 //   { registrado: 3, en_preparacion: 3, listo: 2, entregado: 2 }
 // Con una lista vacía, todos van en 0.
+export function resumenPorEstado(pedidos) {
+  const resumen = {
+    registrado: 0,
+    en_preparacion: 0,
+    listo: 0,
+    entregado: 0
+  };
+
+  pedidos.forEach(pedido => {
+    resumen[pedido.estado]++;
+  });
+
+  return resumen;
+}
 
 // ----------------------------------------------------------------------------
 // MISIÓN 5 · RF5 — Buscar pedidos por nombre de cliente
