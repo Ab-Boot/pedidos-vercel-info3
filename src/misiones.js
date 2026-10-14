@@ -125,6 +125,27 @@ export function resumenPorEstado(pedidos) {
 // Pista: 'Ramírez'.normalize('NFD').replace(/[̀-ͯ]/g, '')
 //        Investiga qué hace NFD. Es un problema real en sistemas en español.
 
+export function buscarPedidos(pedidos, texto) {
+  const busqueda = texto
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
+  if (busqueda === '') {
+    return pedidos;
+  }
+
+  return pedidos.filter(pedido => {
+    const nombre = pedido.cliente
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+
+    return nombre.includes(busqueda);
+  });
+}
+
 // ----------------------------------------------------------------------------
 // MISIÓN 6 · DESTACADO — Los mejores clientes
 // ----------------------------------------------------------------------------
