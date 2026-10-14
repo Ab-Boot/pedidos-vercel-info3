@@ -155,4 +155,29 @@ export function buscarPedidos(pedidos, texto) {
 // Orden: total de mayor a menor; si empatan, por nombre alfabético.
 // Pista: un objeto acumulador, luego Object.entries, map y sort.
 
+export function topClientes(pedidos, n) {
+  const acumulador = {};
+
+  pedidos.forEach(pedido => {
+    const cliente = pedido.cliente;
+
+    if (!acumulador[cliente]) {
+      acumulador[cliente] = 0;
+    }
+
+    acumulador[cliente] += totalPedido(pedido);
+  });
+
+  return Object.entries(acumulador)
+    .map(([cliente, total]) => ({ cliente, total }))
+    .sort((a, b) => {
+      if (b.total !== a.total) {
+        return b.total - a.total;
+      }
+
+      return a.cliente.localeCompare(b.cliente);
+    })
+    .slice(0, n);
+}
+
 
